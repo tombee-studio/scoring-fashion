@@ -6,6 +6,6 @@ itsdangerous==1.1.0
 Jinja2==2.11.2
 MarkupSafe==1.1.1
 numpy==1.19.4
-torch==1.7.0
+http://download.pytorch.org/whl/cpu/torch-1.7.0-cp36-cp36m-linux_x86_64.whl
 typing-extensions==3.7.4.3
 Werkzeug==1.0.1
