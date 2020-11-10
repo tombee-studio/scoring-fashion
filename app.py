@@ -2,6 +2,7 @@ import os
 from classes.scoring_model import ScoringModel
 from classes.util import Util
 from flask import Flask, render_template, url_for, request
+import json
 
 app = Flask(__name__)
 scoringModel = ScoringModel()
@@ -29,9 +30,10 @@ def index(path):
     return render_template('index.html')
 
 
-@app.route('/score', methods=["GET"])
-def predict():
-    return request.args.get("user_name")
+@app.route('/score', methods=["POST"])
+def score():
+    image = Util.ToBinary(json.loads(request.data.decode())["buffer"]).convert('RGB')
+    return scoringModel.show_result(image), 200
 
 
 if __name__ == '__main__':

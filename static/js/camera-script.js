@@ -53,6 +53,10 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
     canvas.height = canvasSize.h;
     document.getElementById('canvasPreview').appendChild(canvas);
 
+    video.addEventListener('loadeddata', function (_) {
+        isVideoLoaded = true;
+    });
+
     // コンテキストを取得する
     canvasCtx = canvas.getContext('2d');
 
@@ -117,6 +121,18 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
             if(tenFlag >= 100) {
                 flag = false;
                 $('#player').toggleClass('show');
+                var image_data = canvas.toDataURL("image/png");
+                image_data = image_data.replace(/^.*,/, '');
+                var request = new XMLHttpRequest();
+                request.onreadystatechange = function () {
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                        console.log(this.responseText);
+                    }
+                }
+                var data = JSON.stringify({ "buffer": image_data });
+                request.open('POST', '/score', true);
+                request.setRequestHeader( 'Content-Type', 'application/json' );
+                request.send(data);
             }
         }
         requestAnimationFrame(_canvasUpdate);
