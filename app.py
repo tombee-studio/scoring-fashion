@@ -33,7 +33,7 @@ def index(path):
 @app.route('/score', methods=["POST"])
 def score():
     image = Util.ToBinary(json.loads(request.data.decode())["buffer"]).convert('RGB')
-    return scoringModel.show_result(image), 200
+    return str(scoringModel.show_result(image).detach().numpy()[0][0]), 200
 
 
 if __name__ == '__main__':

@@ -63,9 +63,9 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
     // video要素の映像をcanvasに描画する
 
     _canvasUpdate();
-    setTimeout(function() {
+    video.addEventListener('loadeddata', function () {
         isVideoLoaded = true;
-    }, 1000);
+    });
 
     var offset = 0;
     function check(pose) {
@@ -126,7 +126,7 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
                 var request = new XMLHttpRequest();
                 request.onreadystatechange = function () {
                     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                        console.log(this.responseText);
+                        $('#score').text(this.responseText);
                     }
                 }
                 var data = JSON.stringify({ "buffer": image_data });
