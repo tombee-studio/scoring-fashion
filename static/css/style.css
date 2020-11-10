@@ -1,0 +1,101 @@
+body {
+    margin: 0 auto;
+}
+
+div {
+    margin: 0px;
+}
+
+#header {
+    background-color: ivory;
+    width: 100%;
+    height: 10vh;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#header img {
+    height: 80%;
+}
+
+#content {
+    margin: 10px;
+}
+
+#content div {
+    margin: 0 auto;
+}
+
+/* === ボタンを表示するエリア ============================== */
+.sample2Area {
+    margin         : auto;                /* 中央寄せ           */
+    width          : 100px;               /* ボタンの横幅       */
+}
+
+/* === チェックボックス ==================================== */
+.sample2Area input[type="checkbox"] {
+    display        : none;            /* チェックボックス非表示 */
+}
+
+/* === チェックボックスのラベル（標準） ==================== */
+.sample2Area label {
+    display        : block;               /* ボックス要素に変更 */
+    box-sizing     : border-box;          /* 枠線を含んだサイズ */
+    text-align     : left;                /* 文字位置は中央     */
+    border         : 2px solid #78bd78;   /* 枠線               */
+    border-radius  : 3px;                 /* 角丸               */
+    line-height    : 1;                   /* 1行の高さ          */
+    height         : 50px;                /* ボタンの高さ       */
+}
+
+/* === 移動BOX（標準） ===================================== */
+.sample2Area #sample2box {
+    display        :inline-block;
+    height         : 46px;                /* ボタンの高さ       */
+    width          : 50%;                 /* ボタンの高さ       */
+    background     : #ddd;                /* 背景色             */
+    transition     : .3s;                 /* ゆっくり変化       */
+}
+
+.sample2Area #sample2check:checked + label #sample2box {
+    transform      : translateX(100%);    /* BOXを右に移動      */
+    background     : #78bd78;             /* 背景色             */
+}
+
+#recommends {
+    text-align: left;
+}
+
+#recommends li {
+    display: inline-block;
+    border-bottom: solid lightgray 1px;
+}
+
+.card-wrapper {
+    width: fit-content;
+    height: 560px;
+    overflow: hidden;
+    border-radius: 10px;
+    background-color: lightgreen;
+}
+
+.card-left {
+    display: block;
+}
+
+.card-right {
+    display: block;
+    height: 0px;
+    padding: 0px;
+    transition-duration: 1.0s;
+    transition-timing-function: ease;
+}
+
+.card-right h1 {
+    text-align: center;
+}
+
+.show {
+    width: 500px;
+    padding: 10px;
+}
