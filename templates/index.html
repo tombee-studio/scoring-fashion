@@ -13,10 +13,6 @@
     <script src="https://unpkg.com/@tensorflow-models/posenet"></script>
     
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-
-    <script type="text/javascript">
-
-    </script>
 </head>
 <body>
     <div id="header">
@@ -25,22 +21,15 @@
     <div id="content">
         <div class="card-wrapper">
             <div class="card-left" id="canvasPreview"></div>
-            <div class="card-right">
-                <h1>Recommends</h1>
+            <div id="player" class="card-right">
                 <ul id="#recommends">
                     <li>
-                        Icoon X
+                        <div></div>
                     </li>
                 </ul>
             </div>
         </div>
-        <div id="videoPreview"></div>
-        <!--<div class="sample2Area" id="makeImg">
-            <input type="checkbox" id="sample2check" checked="">
-            <label for="sample2check">
-                <div id="sample2box"></div>
-            </label>
-        </div>-->
     </div>
+    <div id="videoPreview"></div>
 </body>
 </html>

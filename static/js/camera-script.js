@@ -6,12 +6,6 @@ var outputStride = 16;
 var flipHorizontal = false;
 var isVideoLoaded = false;
 var isAnchorLoaded = false;
-const constraints = {
-    audio: false,
-    video: {
-        facingMode: "environment"
-    }
-};
 
 window.onload = function() {    // タグ内にjavascriptコードを直接記述します。
 
@@ -45,7 +39,8 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
     media = navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
-            facingMode: "environment"
+            width: { ideal: resolution.w },
+            height: { ideal: resolution.h }
         }
     }).then(function(stream) {
         video.srcObject = stream;
@@ -63,10 +58,10 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
 
     // video要素の映像をcanvasに描画する
 
-    video.addEventListener('loadeddata', function() {
-        isVideoLoaded = true;
-    });
     _canvasUpdate();
+    setTimeout(function() {
+        isVideoLoaded = true;
+    }, 1000);
 
     var offset = 0;
     function check(pose) {
@@ -95,8 +90,6 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
             canvasCtx.lineWidth = 7;
             canvasCtx.rect(area.x, area.y, area.w, area.h);
             canvasCtx.stroke();
-            
-//            canvasCtx.drawImage(anchor, 0, 0);
 
             offset += 0.5;
             if(offset > 16) {
@@ -123,6 +116,7 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
 
             if(tenFlag >= 100) {
                 flag = false;
+                $('#player').toggleClass('show');
             }
         }
         requestAnimationFrame(_canvasUpdate);

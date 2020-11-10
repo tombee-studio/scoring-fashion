@@ -81,14 +81,16 @@ div {
 
 .card-left {
     display: block;
+    float: left;
 }
 
 .card-right {
     display: block;
-    height: 0px;
+    width: 0px;
     padding: 0px;
     transition-duration: 1.0s;
     transition-timing-function: ease;
+    float: right;
 }
 
 .card-right h1 {
