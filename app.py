@@ -1,5 +1,6 @@
 import os
 from classes.scoring_model import ScoringModel
+from classes.more_fashionable_model import MoreFashionableModel
 from classes.util import Util
 from flask import Flask, render_template, url_for, request
 import json
@@ -7,6 +8,8 @@ import json
 app = Flask(__name__)
 scoringModel = ScoringModel()
 scoringModel.load()
+
+more_fashionable = MoreFashionableModel()
 
 
 @app.context_processor
@@ -32,8 +35,13 @@ def index(path):
 
 @app.route('/score', methods=["POST"])
 def score():
-    image = Util.ToBinary(json.loads(request.data.decode())["buffer"]).convert('RGB')
-    return str(scoringModel.show_result(image).detach().numpy()[0][0]), 200
+    image = Util.to_binary(json.loads(request.data.decode())["buffer"]).convert('RGB')
+    result = more_fashionable.result()
+    value = scoringModel.show_result(image).detach().numpy()[0][0]
+    return json.dumps({
+        'score': str(round(value, 2)),
+        'result': result
+    }), 200
 
 
 if __name__ == '__main__':

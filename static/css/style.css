@@ -34,28 +34,36 @@ div {
     color: moccasin;
 }
 
-#score:before {
-    height: 20px;
-    content: "Score";
-    background-color: lemonchiffon;
-    padding: 10px;
-}
-
-#recommends li {
-    display: inline-block;
-    border-bottom: solid lightgray 1px;
+ul {
+    list-style: none;
 }
 
 .card-wrapper {
     width: fit-content;
     height: 560px;
+    margin: 10px;
     overflow: hidden;
     border-radius: 10px;
+    background-color: sandybrown;
+}
+
+.parent {
+    position: relative;
+}
+
+.child {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+    text-align: center;
+    line-height: 100px;
 }
 
 .card-left {
     display: block;
     float: left;
+    width: fit-content;
 }
 
 .card-right {
@@ -66,7 +74,6 @@ div {
     transition-duration: 1.0s;
     transition-timing-function: ease;
     float: right;
-    background-color: sandybrown;
 }
 
 .card-right h1 {

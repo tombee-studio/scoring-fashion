@@ -15,22 +15,21 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
-    <div id="header">
-        <img src="{{ url_for('static', filename='img/logo.png') }}"/>
-    </div>
     <div id="content">
-        <div class="card-wrapper">
-            <div class="card-left" id="canvasPreview"></div>
-            <div id="player" class="card-right">
-                <h1 id="score"></h1>
-                <ul id="#recommends">
-                    <li>
-                        <div></div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <ul id="result">
+            <li>
+                <div class="card-wrapper">
+                    <div class="card-left parent" id="canvasPreview">
+                        <div id="player-score" class="child"></div>
+                    </div>
+                    <div id="player" class="card-right">
+                        
+                    </div>
+                </div>
+            </li>
+        </ul>
+        
     </div>
-    <div id="videoPreview"></div>
+    <div id="videoPreview" hidden></div>
 </body>
 </html>

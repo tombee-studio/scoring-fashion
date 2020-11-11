@@ -7,7 +7,35 @@ var flipHorizontal = false;
 var isVideoLoaded = false;
 var isAnchorLoaded = false;
 
-window.onload = function() {    // タグ内にjavascriptコードを直接記述します。
+function updateList(jsonData) {
+    $('#player-score').text(jsonData['score']);
+    var i = 0;
+ 
+    var timer = setInterval(function() {
+        var data = jsonData['result'][i];
+        var li = $('<li>');
+        var wrapper = $('<div>').attr({
+            "class": "card-wrapper"
+        }).appendTo('<li>');
+
+        $('<img>').attr({ 
+            "class": "card-left parent",
+            "src": "data:image/jpeg;base64," + data["base64"]
+        }).appendTo(wrapper);
+        var cardRight = $('<div>').attr({ "class": "card-right parent" });
+        cardRight.appendTo(wrapper);
+        cardRight.delay(500).queue(function(){
+            $(this).addClass('show');
+        });
+
+        $('#result').prepend(wrapper);
+
+        i++;
+        if(i == jsonData['result'].length) clearInterval(timer);
+    }, 1000);
+}
+
+window.onload = function() {
 
     var tenFlag = 0;
     var posenetInstance = posenet.load();
@@ -18,7 +46,7 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
         isAnchorLoaded = true;
     };
     
-    const cameraSize = { w: 500, h: 700 };//カメラのサイズ
+    const cameraSize = { w: 500, h: 700 };
     const canvasSize = { w: 400, h: 560 };
     const resolution = { w: 500, h: 700 };
     const area = {x: 30, y: 30, w: 340, h:500 }
@@ -27,7 +55,6 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
     let canvas;
     let canvasCtx;
 
-    // video要素をつくる
     video          = document.createElement('video');
     video.id       = 'video';
     video.width    = cameraSize.w;
@@ -35,7 +62,6 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
     video.autoplay = true;
     document.getElementById('videoPreview').appendChild(video);
 
-    // video要素にWebカメラの映像を表示させる
     media = navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
@@ -46,7 +72,6 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
         video.srcObject = stream;
     });
 
-    // canvas要素をつくる
     canvas        = document.createElement('canvas');
     canvas.id     = 'canvas';
     canvas.width  = canvasSize.w;
@@ -57,11 +82,7 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
         isVideoLoaded = true;
     });
 
-    // コンテキストを取得する
     canvasCtx = canvas.getContext('2d');
-
-    // video要素の映像をcanvasに描画する
-
     _canvasUpdate();
     video.addEventListener('loadeddata', function () {
         isVideoLoaded = true;
@@ -125,9 +146,8 @@ window.onload = function() {    // タグ内にjavascriptコードを直接記�
                 image_data = image_data.replace(/^.*,/, '');
                 var request = new XMLHttpRequest();
                 request.onreadystatechange = function () {
-                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                        $('#score').text(this.responseText);
-                    }
+                    if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
+                        updateList(JSON.parse(this.responseText));
                 }
                 var data = JSON.stringify({ "buffer": image_data });
                 request.open('POST', '/score', true);
