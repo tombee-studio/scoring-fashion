@@ -1,8 +1,6 @@
 .DS_Store
 .idea/
 venv/
-data/
-models/
 ngrok
 *.txt
 .azure/
