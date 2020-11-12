@@ -34,8 +34,21 @@ div {
     color: moccasin;
 }
 
+#more-fashionable {
+    width: 50%;
+    height: 0;
+}
+
+#more-fashionable .show {
+    height: 20%;
+}
+
 ul {
     list-style: none;
+}
+
+li {
+    margin: 30px;
 }
 
 .card-wrapper {

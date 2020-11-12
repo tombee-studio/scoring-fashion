@@ -10,13 +10,15 @@ var isAnchorLoaded = false;
 function updateList(jsonData) {
     $('#player-score').text(jsonData['score']);
     var i = 0;
+    
+    console.log(jsonData);
  
     var timer = setInterval(function() {
         var data = jsonData['result'][i];
         var li = $('<li>');
         var wrapper = $('<div>').attr({
             "class": "card-wrapper"
-        }).appendTo('<li>');
+        }).appendTo(li);
 
         $('<img>').attr({ 
             "class": "card-left parent",
@@ -28,7 +30,7 @@ function updateList(jsonData) {
             $(this).addClass('show');
         });
 
-        $('#result').prepend(wrapper);
+        $('#result').prepend(li);
 
         i++;
         if(i == jsonData['result'].length) clearInterval(timer);
@@ -47,9 +49,9 @@ window.onload = function() {
     };
     
     const cameraSize = { w: 500, h: 700 };
-    const canvasSize = { w: 400, h: 560 };
+    const canvasSize = { w: 500, h: 667 };
     const resolution = { w: 500, h: 700 };
-    const area = {x: 30, y: 30, w: 340, h:500 }
+    const area = {x: 30, y: 30, w: 440, h:500 }
     let video;
     let media;
     let canvas;
@@ -102,7 +104,7 @@ window.onload = function() {
 
     function _canvasUpdate() {
         if(flag && isAnchorLoaded) {
-            canvasCtx.drawImage(video, 0, 0, 500, 700, 0, 0, canvasSize.w, canvasSize.h);
+            canvasCtx.drawImage(video, 0, 0, 500, 667, 0, 0, canvasSize.w, canvasSize.h);
 
             canvasCtx.beginPath();
             canvasCtx.setLineDash([4, 2]);
@@ -128,7 +130,6 @@ window.onload = function() {
                 }).then(function(pose){
                     poseNetFlag = true;
                     if(check(pose) > 13) {
-                        
                         tenFlag++;
                     } else {
                         if(tenFlag > 0) {

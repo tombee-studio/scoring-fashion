@@ -13,6 +13,9 @@ class MoreFashionableModel:
             with open(file, 'rb') as image:
                 characters.append({
                     'score': 4.0,
-                    'base64': Util.to_base64(image.read()).decode()
+                    'base64': Util.to_base64(image.read()).decode(),
+                    'items': [
+
+                    ]
                 })
         return characters
