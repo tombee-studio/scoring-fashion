@@ -42,4 +42,7 @@ def score():
 
 
 if __name__ == '__main__':
-    app.run()
+    PORT = 5000
+    if 'PORT' in os.environ:
+        PORT = os.environ['PORT']
+    app.run(host='0.0.0.0', port=PORT)
