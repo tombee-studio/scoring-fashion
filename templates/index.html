@@ -2,7 +2,10 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>これ着てみて</title>
+    <title>+U</title>
+    <script type="text/javascript">
+        var gender = 'mens';
+    </script>
     <script type="text/javascript" 
             src="{{ url_for('static', filename='js/jquery-3.5.1.min.js') }}"></script>
     <script type="text/javascript" 
@@ -15,20 +18,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
 </head>
 <body>
+    <div id="loader-bg">
+        <div id="loader">
+        </div>
+    </div>
     <div id="content">
+        <button id="gender" class="mens">MENS</button>
         <ul id="result">
             <li>
                 <div class="card-wrapper">
-                    <div class="card-left parent" id="canvasPreview">
-                        <div id="player-score" class="child"></div>
+                    <div class="card-left" id="canvasPreview">
                     </div>
-                    <div id="player" class="card-right">
-                        
+                    <div id="player" class="card-right parent">
+                        <div id="player-score" class="socre child circle" ></div>
                     </div>
                 </div>
             </li>
         </ul>
+        <div id="plusyou">
+            <h1>Plus you...</h1>
+            <ul id="more"></ul>
+        </div>
     </div>
     <div id="videoPreview" hidden></div>
+    <script type="text/javascript" 
+            src="{{ url_for('static', filename='js/animation.js') }}"></script>
 </body>
 </html>

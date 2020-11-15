@@ -1,5 +1,11 @@
+@font-face {
+	font-family: 'chogokubosogothic_5';
+	src: url(../font/chogokubosogothic_5.ttf);
+}
+
 body {
     margin: 0 auto;
+    font-family: chogokubosogothic_5;
 }
 
 div {
@@ -18,6 +24,41 @@ div {
     height: 80%;
 }
 
+#loader-bg {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: #fff;
+vertical-align: middle;
+  z-index: 1;
+}
+
+#loader {
+    display: inline-block;
+    position: absolute;
+    width: fit-content;
+    height: fit-content;
+    top: 85%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    color: #000;
+    z-index: 2;
+}
+
+#loader p {
+    display: block;
+    font-size: 32pt;
+}
+
+#loader div {
+    display: block;
+    font-size: 64pt;
+}
+
 #content {
     margin: 10px;
 }
@@ -30,10 +71,6 @@ div {
     text-align: left;
 }
 
-#score {
-    color: moccasin;
-}
-
 #more-fashionable {
     width: 50%;
     height: 0;
@@ -41,6 +78,16 @@ div {
 
 #more-fashionable .show {
     height: 20%;
+}
+
+h1 .rank {
+    top: 0;
+    left: 0;
+    background-color: antiquewhite;
+    position: absolute;
+    display: inline-block;
+    font-size: 32pt;
+    z-index: 100;
 }
 
 ul {
@@ -51,13 +98,22 @@ li {
     margin: 30px;
 }
 
+.score {
+    color: white;
+    font-size: 40pt;
+}
+
+h1 {
+    font-size: 32pt;
+}
+
 .card-wrapper {
     width: fit-content;
     height: 560px;
     margin: 10px;
     overflow: hidden;
     border-radius: 10px;
-    background-color: sandybrown;
+    background-color: #F5B979;
 }
 
 .parent {
@@ -65,12 +121,14 @@ li {
 }
 
 .child {
+    width: 300px;
+    height: 300px;
     position: absolute;
-    width: 100px;
-    height: 100px;
-    margin: 0 auto;
+    top: 50%;
+    left: 50%;
     text-align: center;
-    line-height: 100px;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 .card-left {
@@ -84,9 +142,10 @@ li {
     height: inherit;
     width: 0px;
     padding: 0px;
-    transition-duration: 1.0s;
+    transition-duration: 0.5s;
     transition-timing-function: ease;
     float: right;
+    overflow: hidden;
 }
 
 .card-right h1 {
@@ -96,4 +155,62 @@ li {
 .show {
     width: 500px;
     padding: 10px;
+}
+
+#gender {
+    width: 100px;
+    height: 50px;
+}
+
+.mens {
+    color: blue;
+    background-color: white;
+    content: 'MENS';
+}
+
+.womens {
+    color: pink;
+    background-color: white;
+    content: 'LADIES';
+}
+
+/* === ボタンを表示するエリア ============================== */
+.sample3Area {
+  margin         : auto;                /* 中央寄せ           */
+  width          : 60px;                /* ボタンの横幅       */
+}
+ 
+ /* === チェックボックス ==================================== */
+.sample3Area input[type="checkbox"] {
+  display        : none;            /* チェックボックス非表示 */
+}
+ 
+ /* === チェックボックスのラベル（標準） ==================== */
+.sample3Area label {
+  display        : block;               /* ボックス要素に変更 */
+  box-sizing     : border-box;          /* 枠線を含んだサイズ */
+  text-align     : center;              /* 文字位置は中央     */
+  border         : 2px solid #ccc;      /* 枠線(一旦四方向)   */
+  border-radius  : 3px;                 /* 角丸               */
+  height         : 60px;                /* ボタンの高さ       */
+  font-size      : 18px;                /* 文字サイズ         */
+  line-height    : 60px;                /* 太字               */
+  font-weight    : bold;                /* 太字               */
+  background     : #eee;                /* 背景色             */
+  box-shadow     : 3px 3px 6px #888;    /* 影付け             */
+  transition     : .3s;                 /* ゆっくり変化       */
+}
+ 
+ /* === ON側のチェックボックスのラベル（ONのとき） ========== */
+.sample3Area label span:after{
+  content        : "MENS";               /* 表示する文字       */
+  color          : #aaa;
+}
+.sample3Area #sample3check:checked + label {
+  background     : #78bd78;             /* 背景色             */
+  box-shadow     : none;                /* 影を消す           */
+}
+.sample3Area #sample3check:checked + label span:after {
+  content        : "LADIES";                /* 表示する文字       */
+  color          : #fff;                /* 文字色             */
 }

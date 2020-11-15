@@ -68,7 +68,7 @@ def scoring(image):
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-            ])
+    ])
 
     score = to_score(show_result(model, image, data_transform))
     return score

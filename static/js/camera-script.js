@@ -8,36 +8,60 @@ var isVideoLoaded = false;
 var isAnchorLoaded = false;
 
 function updateList(jsonData) {
-    $('#player-score').text(jsonData['score']);
-    var i = 0;
+    $('#player-score').html('<h1>' + jsonData['score'] + '</h1>');
+    $('#plusyou').fadeIn("slow");
     
-    console.log(jsonData);
- 
-    var timer = setInterval(function() {
-        var data = jsonData['result'][i];
-        var li = $('<li>');
-        var wrapper = $('<div>').attr({
-            "class": "card-wrapper"
-        }).appendTo(li);
+    function updateResult(jsonData) {
+        var position = $('#plusyou').offset().top;
+        
+        var i = 0;
 
-        $('<img>').attr({ 
-            "class": "card-left parent",
-            "src": "data:image/jpeg;base64," + data["base64"]
-        }).appendTo(wrapper);
-        var cardRight = $('<div>').attr({ "class": "card-right parent" });
-        cardRight.appendTo(wrapper);
-        cardRight.delay(500).queue(function(){
-            $(this).addClass('show');
+        var result = jsonData['result'].sort(function(first, second) {
+            return Number(first['score']) - Number(second['score']);
         });
+        
+        var timer = setInterval(function() {
+            var data = result[i];
+            var li = $('<li>');
+            var wrapper = $('<div>').attr({
+                "class": "card-wrapper"
+            }).appendTo(li);
 
-        $('#result').prepend(li);
+            $('<img>').attr({ 
+                "class": "card-left parent",
+                "src": "data:image/jpeg;base64," + data["base64"]
+            }).appendTo(wrapper);
+            var cardRight = $('<div>').attr({ "class": "card-right parent" });
+            cardRight.appendTo(wrapper);
+            cardRight.delay(500).queue(function(){
+                $(this).addClass('show');
+            });
+            var score = $('<div class="socre child circle"><h1>' + data['score'] + '</h1></div>').appendTo(cardRight);
+            $("html, body").animate({scrollTop: position}, 400, "swing");
 
-        i++;
-        if(i == jsonData['result'].length) clearInterval(timer);
+            $('#more').prepend(li);
+
+            i++;
+            if(i == jsonData['result'].length) clearInterval(timer);
+        }, 1000);
+    }
+    setTimeout(function() {
+        updateResult(jsonData);
     }, 1000);
 }
 
 window.onload = function() {
+    
+    $('#gender').on('click', function(ev) {
+        if(gender == 'mens') {
+            gender = 'womens';
+        } else {
+            gender = 'mens';
+        }
+        $(this).toggleClass('mens');
+        $(this).toggleClass('womens');
+        $(this).text(gender.toUpperCase());
+    });
 
     var tenFlag = 0;
     var posenetInstance = posenet.load();
@@ -48,7 +72,7 @@ window.onload = function() {
         isAnchorLoaded = true;
     };
     
-    const cameraSize = { w: 500, h: 700 };
+    const cameraSize = { w: 500, h: 667 };
     const canvasSize = { w: 500, h: 667 };
     const resolution = { w: 500, h: 700 };
     const area = {x: 30, y: 30, w: 440, h:500 }
@@ -78,18 +102,14 @@ window.onload = function() {
     canvas.id     = 'canvas';
     canvas.width  = canvasSize.w;
     canvas.height = canvasSize.h;
-    document.getElementById('canvasPreview').appendChild(canvas);
+    document.getElementById('canvasPreview').prepend(canvas);
 
     video.addEventListener('loadeddata', function (_) {
         isVideoLoaded = true;
+        _canvasUpdate();
     });
 
     canvasCtx = canvas.getContext('2d');
-    _canvasUpdate();
-    video.addEventListener('loadeddata', function () {
-        isVideoLoaded = true;
-    });
-
     var offset = 0;
     function check(pose) {
         f = pose.keypoints.reduce(function(prev, value) {
@@ -103,54 +123,80 @@ window.onload = function() {
     }
 
     function _canvasUpdate() {
+        const MAX_WIDTH = 30;
+        const start = 'Please don\'t move';
+        const middle = 'A little more...';
+        const ALERT = 'Be inside the area';
+        
         if(flag && isAnchorLoaded) {
+            var fontSize = 24;
             canvasCtx.drawImage(video, 0, 0, 500, 667, 0, 0, canvasSize.w, canvasSize.h);
+            var image_data = canvas.toDataURL("image/png");
+            if(MAX_WIDTH > tenFlag) {
+                canvasCtx.beginPath();
+                canvasCtx.setLineDash([4, 2]);
+                if(tenFlag > 0 && tenFlag < MAX_WIDTH - 20) {
+                    canvasCtx.strokeStyle = "rgba(200,200,255,1.0)";
+                    var textWidth = canvasCtx.measureText(start).width;
+                    canvasCtx.fillText(start, 250 - textWidth / 2, 333 - 12);
+                } else if(tenFlag >= MAX_WIDTH - 20) {
+                    canvasCtx.strokeStyle = "rgba(100,100,255,1.0)";
+                    var textWidth = canvasCtx.measureText(middle).width;
+                    canvasCtx.fillText(middle, 250 - textWidth / 2, 333 - 12);
+                } else {
+                    canvasCtx.font = "bold " + fontSize + "px Arial, meiryo, sans-serif" ;
+                    canvasCtx.strokeStyle = "rgba(255,200,200,1.0)";
+                    var textWidth = canvasCtx.measureText(ALERT).width;
+                    canvasCtx.fillText(ALERT, 250 - textWidth / 2, 333 - 12);
+                }
+                canvasCtx.stroke();
 
-            canvasCtx.beginPath();
-            canvasCtx.setLineDash([4, 2]);
-            if(tenFlag > 0) {
-                canvasCtx.strokeStyle = "rgba(0,0,255,1.0)";
-            } else {
-                canvasCtx.strokeStyle = "rgba(255,0,0,1.0)";
-            }
-            canvasCtx.lineDashOffset = -offset;
-            canvasCtx.lineWidth = 7;
-            canvasCtx.rect(area.x, area.y, area.w, area.h);
-            canvasCtx.stroke();
+                canvasCtx.beginPath();
+                canvasCtx.strokeStyle = "rgba(255,255,255,1.0)";
+                canvasCtx.fillStyle = "rgba(255,255,255,1.0)";
+                canvasCtx.lineWidth = 1;
+                canvasCtx.setLineDash([]);
+                canvasCtx.fillRect(100, 330, 300 * tenFlag / MAX_WIDTH, 10);
+                canvasCtx.fill();
 
-            offset += 0.5;
-            if(offset > 16) {
-                offset = 0;
-            }
+                if(tenFlag < MAX_WIDTH) {
+                    canvasCtx.lineDashOffset = -offset;
+                    canvasCtx.lineWidth = 7;
+                    canvasCtx.rect(area.x, area.y, area.w, area.h);
+                    canvasCtx.stroke();
+                }
 
-            if(poseNetFlag && isVideoLoaded) {
-                posenetInstance.then(function(net){
-                    poseNetFlag = false;
-                    return net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride)
-                }).then(function(pose){
-                    poseNetFlag = true;
-                    if(check(pose) > 13) {
-                        tenFlag++;
-                    } else {
-                        if(tenFlag > 0) {
-                            tenFlag--;
+                offset += 0.5;
+                if(offset > 16) {
+                    offset = 0;
+                }
+
+                if(poseNetFlag && isVideoLoaded) {
+                    posenetInstance.then(function(net){
+                        poseNetFlag = false;
+                        return net.estimateSinglePose(video, imageScaleFactor, flipHorizontal, outputStride)
+                    }).then(function(pose){
+                        poseNetFlag = true;
+                        if(check(pose) > 13) {
+                            tenFlag++;
+                        } else {
+                            if(tenFlag > 0) {
+                                tenFlag--;
+                            }
                         }
-                    }
-                    console.log(tenFlag);
-                });
-            }
-
-            if(tenFlag >= 100) {
+                        console.log(tenFlag);
+                    });
+                }
+            } else {
                 flag = false;
                 $('#player').toggleClass('show');
-                var image_data = canvas.toDataURL("image/png");
                 image_data = image_data.replace(/^.*,/, '');
                 var request = new XMLHttpRequest();
                 request.onreadystatechange = function () {
                     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) 
                         updateList(JSON.parse(this.responseText));
                 }
-                var data = JSON.stringify({ "buffer": image_data });
+                var data = JSON.stringify({ "buffer": image_data, "gender": gender });
                 request.open('POST', '/score', true);
                 request.setRequestHeader( 'Content-Type', 'application/json' );
                 request.send(data);

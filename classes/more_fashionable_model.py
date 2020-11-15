@@ -1,21 +1,20 @@
 import glob
 from classes.util import Util
 import json
+import requests
 
+TARGET_URL = [
+    'https://fashion-scoring-api.herokuapp.com/more',
+    'https://ps7dd07cv1.execute-api.us-east-2.amazonaws.com/more'
+]
 
-class MoreFashionableModel:
-    def __init__(self):
-        pass
-
-    def result(self):
-        characters = []
-        for file in glob.glob('data/*.jpeg'):
-            with open(file, 'rb') as image:
-                characters.append({
-                    'score': 4.0,
-                    'base64': Util.to_base64(image.read()).decode(),
-                    'items': [
-
-                    ]
-                })
-        return characters
+def more(buffer, gender, my_osyaredo):
+    r = requests.post(TARGET_URL[1],
+                      data=json.dumps({
+                          'buffer': buffer,
+                          'gender': gender,
+                          'my_osyaredo': my_osyaredo
+                      }),
+                      headers={'Content-Type': 'application/json'})
+    print(r.text)
+    return json.loads(json.loads(r.text)["body"])
